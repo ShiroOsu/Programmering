@@ -25,11 +25,18 @@ public class Game extends Canvas{
     private JFrame frame;
     private String fps, tps, score;
     private Player player;
+    private Bullet bullet;
+    private Enemy e;
     private BulletManager bulletManager;
-    private Enemy lmao;
-    public static Level level1;
-    private int mobCount = 10;
+    public static Level level1, level;
+    private int mobCountKilled = 0;
     private String mobCounts;
+    private Collision c = new Collision();
+    private long time;
+	private long dif; 
+    
+    
+    
 
     
 
@@ -40,11 +47,22 @@ public class Game extends Canvas{
     	player = new Player(WIDTH/2 - 40, 600, loadImage("/topDownShooter/lmao/SpaceShip.png"), 80, 80, 4.69);
     	bulletManager = new BulletManager(player);
     	
+    	
+    	
+    	
     	bulletManager.setImage(loadImage("/topDownShooter/lmao/bullet.png"));
 
-    	//lmao = new Enemy(loadImage("/topDownShooter/lmao/blaue.png"), WIDTH/2 - 50, 100, 100, 100, 0.01);
+    	bulletManager.addBullet();
+    	
     	level1 = new Level(bulletManager);
-    	level1.setImage(loadImage("/topDownShooter/lmao/red.jpg"));
+    	level1.setImage(loadImage("/topDownShooter/lmao/red.png"));
+    	
+    	
+    	
+    	
+    	
+    	
+    	
     	
     	addKeyListener(player);
         frame = new JFrame("Shooter");
@@ -68,11 +86,16 @@ public class Game extends Canvas{
     	long timer = System.currentTimeMillis();
     	
         createBufferStrategy(3);
+    
         requestFocus();
+        time = System.currentTimeMillis();
         
+       
         
         //game loop
         while(true){
+        	
+        	
         	long now = System.nanoTime();
         	delta += (now - lastTime) / ns;
         	lastTime = now;
@@ -82,8 +105,11 @@ public class Game extends Canvas{
         		update();
         	}
         	
+        	
         	frames++;
         	render();
+        	
+        	
         	
         	try{
         		Thread.sleep(5);
@@ -100,12 +126,27 @@ public class Game extends Canvas{
         		timer += 1000;
         		
         	}
+        	int mobCount = level1.getMobCount();
         	
-        	score = String.valueOf(mobCount);
-        	mobCounts = String.valueOf(level1.getMobCount());
-            
-            
-        
+        	score = String.valueOf(mobCountKilled);
+        	mobCounts = String.valueOf(mobCount);
+        	
+        	
+        	
+        	
+        	
+        	
+        	long delaytimer = delay();
+        	dif = System.currentTimeMillis();
+        	
+        	
+        	if(delaytimer >= 5000 && delaytimer <= 5100){
+        		System.out.println(delaytimer);
+       			level1.addEnemy();
+       			setDelay(0);
+        	}
+        	
+    
             
             //TODO logik och skit
             //TODO sleeptime
@@ -117,7 +158,12 @@ public class Game extends Canvas{
         player.update();
         bulletManager.update();
         level1.update();
+     
+
     }
+    
+    
+
 
     private void render(){
         BufferStrategy bs = this.getBufferStrategy();
@@ -152,6 +198,17 @@ public class Game extends Canvas{
 
         g.dispose();
         bs.show();
+    }
+    
+    private long delay(){
+    	return (dif - time);
+    }
+    /**
+     * kan det här funka
+     * @param t
+     */
+    private void setDelay(long t){
+    	dif = t;
     }
 
     private BufferedImage loadImage(String path){
