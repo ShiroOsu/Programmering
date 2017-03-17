@@ -8,50 +8,39 @@ import javax.imageio.ImageIO;
 import topDownShooter.Game;
 
 public class Background {
-	private double x, y, dx, dy ,moveScale;
+	private double x, y;
 	
 	private BufferedImage image;
 	
-	public Background(String s, double ms){
+	public Background(String path){
 		
 		try{
 			
-			image = ImageIO.read(getClass().getResourceAsStream(s));
+			image = ImageIO.read(getClass().getResourceAsStream(path));
 			
-			moveScale = ms;
-			//setVector(0, 10); kanske?
+			
 			
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 		
 	}
+	/*
+	 * sätter vart image ska ritas i fönstret (om det behövs)
+	 */
 	
 	public void setPosition(double x, double y){
-		this.x = (x * moveScale) % Game.WIDTH;
-		this.y = (y * moveScale) % Game.HEIGHT;
-		
-	}
-	
-	public void setVector(double dx, double dy){
-		this.dx = dx;
-		this.dy = dy;
+		this.x = (x % Game.WIDTH);
+		this.y = (y % Game.HEIGHT);
 		
 	}
 	
 	public void update(){
-		x += dx;
-		y += dy;
+		
 	}
 	
 	public void render(Graphics g){
 		g.drawImage(image, (int)x, (int)y, null);
-		if(y < 0){
-			g.drawImage(image, (int)x, (int)y + Game.HEIGHT, null);
-		}
-		if(y > 0){
-			g.drawImage(image, (int)x, (int)y - Game.HEIGHT, null);
-		}
+			
 	}
-
 }

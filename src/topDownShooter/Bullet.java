@@ -1,53 +1,42 @@
 package topDownShooter;
 
+import java.awt.Rectangle;
 
-
-public class Bullet {
-		private double x, y;
-		private double speed = 7.0;
-		private int damage;
+@SuppressWarnings("serial")
+public class Bullet extends Rectangle {
+	
+		private int speed = 7;
+		
+		private boolean shouldBeRemoved = false;
 		
 		
-		public Bullet(double x, double y){
-			this.x = x;
-			this.y = y;
+		public Bullet(int x, int y){
+			super(x, y, 25, 25);
 		}
 		
-		public double getX(){
-			return x;
-		}
+	
 		
-		public double getY(){
-			return y;
-		}
-		
-		public void setSpeed(int s){
-			speed = s;
-		}
-		
-		public int getDamge(){
-			return damage;
-		}
-		
-		public void setDamage(int d){
-			damage = d;
-		}
-		
-		public int getWidth(){
-			return 25;
-		}
-		
-		public int getHeight(){
-			return 25;
+		public void setSpeed(int speed){
+			this.speed = speed;
 		}
 	
-		public double getSpeed(){
+		public int getSpeed(){
 			return speed;
 		}
 		
 		public void move(){
 			y -= speed;
 			
+		}
+		
+		public void remove()
+		{
+			shouldBeRemoved = true;
+		}
+		
+		public boolean shouldBeRemoved()
+		{
+			return shouldBeRemoved;
 		}
 }
 

@@ -1,32 +1,25 @@
 package topDownShooter;
 
 import java.awt.Graphics;
-import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 
 
 
+@SuppressWarnings("serial")
 public class Player extends Mob implements KeyListener {
-	
-	
-
-	
-	private boolean up, down, left, right;
+	private boolean up, down, left, right, dead = false;
 	private static boolean isFiring;
-	private long fireDelay;
-	private int damage;
-	
-	
-	
 
-	public Player(int x, int y, BufferedImage image, double width, double height, double speed) {
-		super(image, x, y, width, height, speed);
-
-		
+	public Player(BufferedImage image, int x, int y, int width, int height, int speed) {
+		super(image, x, y, width, height, speed);	
 	}
 
+	/*
+	 * vart spelarn ska fylltas
+	 */
+	@Override
 	public void update() {
 		if(up){
 			y -= speed;
@@ -53,91 +46,57 @@ public class Player extends Mob implements KeyListener {
 			}
 		}
 	}
-	
-	
 
+	@Override
 	public void render(Graphics g) {
-		g.drawImage(image, (int)x, (int)y, (int)width, (int)height, null);
+		g.drawImage(image, x, y, width, height, null);
 	}
-	
+
+	@Override
 	public void setImage(BufferedImage image){
 		this.image = image;
 	}
-	
-	
-	
-	
-	
-	public void setUp(boolean b){
-		up = b;
+
+
+	public boolean isDead(){
+		return dead;
 	}
-	
-	public void setDown(boolean b){
-		down = b;
+
+	public void setDead(){
+		dead = true;
 	}
-	
-	public void setLeft(boolean b){
-		left = b;
+
+
+	public void setUp(boolean up){
+		this.up = up;
 	}
-	
-	public void setRight(boolean b){
-		 right = b;
+
+	public void setDown(boolean down){
+		this.down = down;
 	}
-	
-	public void setFiring(boolean b){
-		isFiring = b;
+
+	public void setLeft(boolean left){
+		this.left = left;
 	}
-	
+
+	public void setRight(boolean right){
+		this.right = right;
+	}
+
+	public void setFiring(boolean f){
+		isFiring = f;
+	}
+
 	public boolean isFiring(){
 		return isFiring;
 	}
-	
-	public long getFireDelay(){
-		return fireDelay;
-	}
-	
-	public long setFireDelay(long l){
-		return fireDelay = l;
-	}
-	
-	
-	
-	public double getY(){
-		return y;
-	}
-	
-	public double getX(){
-		return x;
-	}
-	
-	public double getWidth(){
-		return width;
-	}
-	
-	public double getHeight(){
-		return height;
-	}
-	
-	public int getDamage(){
-		return damage;
-	}
-	
-	public void setDamage(int d){
-		damage = d;
-	}
-	
-	public Rectangle coll(double x, double y){
-		return new Rectangle((int)x, (int)y, 80, 80);
-	}
-	
-	
-	
 
-	
+	@Override
 	public void keyTyped(KeyEvent e) {
 
 	}
 
+	@Override
 	public void keyPressed(KeyEvent e) {
 		int k = e.getKeyCode();
 		if(k == KeyEvent.VK_W){
@@ -157,6 +116,7 @@ public class Player extends Mob implements KeyListener {
 		}
 	}
 
+	@Override
 	public void keyReleased(KeyEvent e) {
 		int k = e.getKeyCode();
 		if(k == KeyEvent.VK_W){

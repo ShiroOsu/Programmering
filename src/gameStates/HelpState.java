@@ -9,34 +9,39 @@ import backGrounds.Background;
 import topDownShooter.Game;
 
 public class HelpState extends GameState {
-	private Color helpColor, textColor;
+	private Color textColor;
 	private Font font;
 	private String[] options = {"Quit", "Back"};
 	private int currentChoice = 1;
 	private Background bg;
 	
 	public HelpState(GameStateManager gsm){
-		bg = new Background("/topDownShooter/lmao/helpbg.png", 1);
+		this.gsm = gsm;
+		bg = new Background("/topDownShooter/lmao/helpbg.png");
 		init();
 	}
 
+	@Override
 	public void init() {
-	
-		//something 
+	 
 	}
 
 
+	@Override
 	public void update() {
-		bg.update();
-		
+		bg.update();	
 	}
 
 
+	@Override
 	public void render(Graphics g) {
 		bg.render(g);
-		textColor = new Color(255, 255, 255);
+		textColor = Color.red;
 		font = new Font("Arial", Font.PLAIN, 20);
-	
+		
+		/*
+		 * Ritar ut lite text om spelet 
+		 */
 		g.setFont(font);
 		g.setColor(textColor);
 		g.drawString("Welcome to the game 'Shooter'. ", 50, 50);
@@ -45,13 +50,9 @@ public class HelpState extends GameState {
 		g.drawString("W A S D to move your spaceship.", 50, 135);
 		g.drawString("F to fire your cannonballs for tons of damage.", 50, 165);
 		
-		
-		g.drawString("[0x7FFA73005110] ANOMALY: meaningless REX prefix used.", 50, 500);
-		g.drawString("White is the option you select.", 50, 530);
-		
 		for(int i = 0; i < options.length; i++){
 			if(i == currentChoice){
-				g.setColor(Color.WHITE);
+				g.setColor(Color.CYAN);
 			} else {
 				g.setColor(Color.RED);
 			}
@@ -66,11 +67,12 @@ public class HelpState extends GameState {
 			System.exit(0);
 		}
 		if(currentChoice == 1){
-			gsm.setState(gsm.MENUSTATE);
+			gsm.setState(GameStateManager.MENUSTATE);
 		}
 	}
 
 
+	@Override
 	public void keyPressed(int k) {
 		if(k == KeyEvent.VK_ENTER){
 			select();
@@ -92,6 +94,7 @@ public class HelpState extends GameState {
 	}
 
 
+	@Override
 	public void keyReleased(int k) {
 	
 	}

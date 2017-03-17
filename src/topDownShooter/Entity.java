@@ -1,31 +1,39 @@
 package topDownShooter;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
-public abstract class Entity {
+import javax.imageio.ImageIO;
+
+@SuppressWarnings("serial")
+public abstract class Entity extends Rectangle {
 	
 	
 	// Fields
 	
-	protected double width, height, x, y;
-	protected double speed;
+	protected int speed;
 	protected BufferedImage image;
 	
+	/*
+	 * Static, så att man inte behöver ladda om bilden flera gånger
+	 */
+	public static final BufferedImage ENEMY = loadImage("src/topDownShooter/lmao/red.png"),
+			BULLET = loadImage("src/topDownShooter/lmao/bullet.png");
 	
+	private boolean shouldBeRemoved = false;
 	
-	public Entity(BufferedImage image, double x, double y, double width, double height, double speed){
+	public Entity(BufferedImage image, int x, int y, int width, int height, int speed){
+		super(x, y , width, height);
 		this.image = image;
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
 		this.speed = speed;
 	}
 	
 	
 	public void render(Graphics g){
-		g.drawImage(image, (int)x, (int)y, (int)width, (int)height, null);
+		g.drawImage(image, x, y, width, height, null);
 		
 	}
 	
@@ -35,5 +43,29 @@ public abstract class Entity {
 	
 	public void update(){
 		
+	}
+	
+	public void setImage(BufferedImage image){
+		this.image = image;
+	}
+	
+	public void remove()
+	{
+		shouldBeRemoved = true;
+	}
+	
+	public boolean shouldBeRemoved()
+	{
+		return shouldBeRemoved;
+	}
+	
+
+	private static BufferedImage loadImage(String path){
+		try{
+			return ImageIO.read(new File(path));
+		}catch (IOException e){
+			System.err.println(e.getMessage());
+			return null;
+		}
 	}
 }
